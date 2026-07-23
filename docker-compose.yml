@@ -1,0 +1,22 @@
+services:
+  app:
+    image: ghcr.io/irsyamokta/portfolio:latest
+    build:
+      context: .
+      args:
+        - VITE_RECAPTCHA_SITE_KEY=${VITE_RECAPTCHA_SITE_KEY}
+    container_name: portfolio
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      VITE_RECAPTCHA_SITE_KEY: ${VITE_RECAPTCHA_SITE_KEY}
+    networks:
+      - odoonet
+
+networks:
+  odoonet:
+    external: true
