@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useState, useEffect, useRef } from "react";
 import { Download, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { fadeUp } from "../../lib/portfolio-utils";
 
 const WORDS = ["Irsyam Okta Pratama Riyadi", "Fullstack Developer", "Always Learning"];
 const TYPING_SPEED = 70;
@@ -11,7 +9,7 @@ const PAUSE_MS = 1800;
 
 function useTypewriter(words: string[]) {
   const [index, setIndex] = useState(0);
-  const [display, setDisplay] = useState("");
+  const [display, setDisplay] = useState(words.length > 0 ? words[0] : "");
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
@@ -46,35 +44,40 @@ function TypewriterText() {
 }
 
 export default function Hero() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const maskRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!maskRef.current) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const mask = `radial-gradient(600px circle at ${x}px ${y}px, black 15%, rgba(0,0,0,0.25) 80%)`;
+    maskRef.current.style.WebkitMaskImage = mask;
+    maskRef.current.style.maskImage = mask;
+  };
+
+  const handleMouseLeave = () => {
+    if (!maskRef.current) return;
+    const defaultMask = "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25))";
+    maskRef.current.style.WebkitMaskImage = defaultMask;
+    maskRef.current.style.maskImage = defaultMask;
   };
 
   return (
     <section
       id="home"
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={handleMouseLeave}
       className="relative overflow-hidden pt-36 pb-28 lg:pt-48 lg:pb-40"
     >
       {/* 1. Circuit Board Pattern (Adaptive to Light/Dark mode) */}
       <div 
+        ref={maskRef}
         className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20 text-foreground overflow-hidden transition-all duration-500"
         style={{ 
-          WebkitMaskImage: isHovered 
-            ? `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, black 15%, rgba(0,0,0,0.25) 80%)`
-            : "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25))",
-          maskImage: isHovered 
-            ? `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, black 15%, rgba(0,0,0,0.25) 80%)`
-            : "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25))",
+          WebkitMaskImage: "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25))",
+          maskImage: "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25))",
         }}
       >
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -130,39 +133,23 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-background/60 to-background" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 text-center">
-        <motion.h1
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.05 }}
-          className="text-display text-5xl sm:text-6xl md:text-6xl lg:text-[82px] text-foreground min-h-[1.1em]"
-        >
+        <h1 className="text-display text-5xl sm:text-6xl md:text-6xl lg:text-[80px] text-foreground min-h-[1.1em]">
           <TypewriterText />
           <span className="text-primary">.</span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.1 }}
-          className="mt-8 mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed"
-        >
+        <p className="mt-8 mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
           Crafting end-to-end web applications with clean architecture,
           thoughtful UI, and reliable APIs. I care about software that's
           maintainable, fast, and actually solves the problem at hand.
-        </motion.p>
+        </p>
 
-        <motion.p
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.15 }}
-          className="mt-3 mx-auto max-w-xl text-sm text-muted-foreground/70 leading-relaxed"
-        >
+        <p className="mt-3 mx-auto max-w-xl text-sm text-muted-foreground/70 leading-relaxed">
           Fresh graduate in Information Systems — fullstack development,
           ERP implementation, and practical AI integration.
-        </motion.p>
+        </p>
 
-        <motion.div
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.2 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
-        >
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button
             size="lg"
             className="rounded-full border border-border/70"
@@ -191,13 +178,9 @@ export default function Hero() {
           >
             <Linkedin className="h-4 w-4" />
           </a>
-        </motion.div>
+        </div>
 
-        <motion.div
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.28 }}
-          className="mt-16 flex justify-center gap-12 sm:gap-20"
-        >
+        <div className="mt-16 flex justify-center gap-12 sm:gap-20">
           {[
             { k: "6+", v: "The system ceated" },
             { k: "4", v: "Core domains" },
@@ -208,7 +191,7 @@ export default function Hero() {
               <div className="mt-1 text-xs text-muted-foreground">{s.v}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

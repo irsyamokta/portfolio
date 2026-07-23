@@ -49,7 +49,26 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+
+      // Add long-term cache headers for immutable static assets
+      const url = new URL(request.url);
+      const isAsset =
+        url.pathname.startsWith("/_assets/") ||
+        url.pathname.startsWith("/_build/") ||
+        /\.(js|mjs|css|woff2?|ttf|otf|ico|png|jpg|jpeg|webp|avif|svg|gif)$/.test(url.pathname);
+
+      if (isAsset && normalized.status === 200) {
+        const headers = new Headers(normalized.headers);
+        headers.set("Cache-Control", "public, max-age=31536000, immutable");
+        return new Response(normalized.body, {
+          status: normalized.status,
+          statusText: normalized.statusText,
+          headers,
+        });
+      }
+
+      return normalized;
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {

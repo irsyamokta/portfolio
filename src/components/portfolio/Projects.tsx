@@ -57,8 +57,11 @@ function ProjectCarousel({ previews }: { previews: string[] }) {
             <img 
               src={img} 
               alt={`Preview ${idx + 1}`} 
-              className="w-full h-full object-cover"
               loading="lazy"
+              decoding="async"
+              width={1440}
+              height={1024}
+              className="w-full h-full object-cover"
             />
             <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] text-white/90 text-mono">
               0{idx + 1} / 0{previews.length}
@@ -92,8 +95,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     <motion.article
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, margin: "-100px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       className="h-full flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-surface group"
     >
       <div className="relative aspect-[1440/1024] overflow-hidden">
@@ -103,9 +106,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <img
           src={project.image}
           alt={project.title}
-          width={1400}
-          height={900}
+          width={1440}
+          height={1024}
           loading="lazy"
+          decoding="async"
           className="relative w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05]"
         />
         <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/5 z-20" />
