@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        - VITE_RECAPTCHA_SITE_KEY=${VITE_RECAPTCHA_SITE_KEY}
+        - VITE_TURNSTILE_SITE_KEY=${VITE_TURNSTILE_SITE_KEY}
     container_name: portfolio
     restart: unless-stopped
     ports:
@@ -13,7 +13,7 @@ services:
       NODE_ENV: production
       PORT: 3000
       HOST: 0.0.0.0
-      VITE_RECAPTCHA_SITE_KEY: ${VITE_RECAPTCHA_SITE_KEY}
+      VITE_TURNSTILE_SITE_KEY: ${VITE_TURNSTILE_SITE_KEY}
     networks:
       - odoonet
 

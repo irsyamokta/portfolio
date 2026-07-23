@@ -44,7 +44,7 @@ jobs:
       - name: Test build (no push, full logs)
         run: |
           docker build --progress=plain --no-cache \
-            --build-arg VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }} \
+            --build-arg VITE_TURNSTILE_SITE_KEY=${{ secrets.VITE_TURNSTILE_SITE_KEY }} \
             -t portfolio-test . 2>&1
         continue-on-error: false
 
@@ -59,7 +59,7 @@ jobs:
           cache-to: type=gha,mode=max
           provenance: false
           build-args: |
-            VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
+            VITE_TURNSTILE_SITE_KEY=${{ secrets.VITE_TURNSTILE_SITE_KEY }}
 
       - name: Deploy on VPS via SSH
         uses: appleboy/ssh-action@v1.0.3

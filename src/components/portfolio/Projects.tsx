@@ -304,7 +304,7 @@ export default function Projects() {
         <div 
           ref={containerRef}
           onScroll={handleScroll}
-          className="mt-16 flex flex-nowrap md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-none pt-4 pb-12 md:py-0 relative"
+          className="mt-16 flex flex-nowrap md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none scrollbar-none pt-4 pb-12 md:py-0 relative"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           {PROJECTS.map((p, i) => (

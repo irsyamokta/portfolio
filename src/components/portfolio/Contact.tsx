@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { Mail, Github, Linkedin, MapPin, ArrowUpRight, Send } from "lucide-react";
 import { toast } from "sonner";
-import ReCAPTCHA from "react-google-recaptcha";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { fadeUp } from "../../lib/portfolio-utils";
 import CircuitBackground from "./CircuitBackground";
 
@@ -13,7 +13,7 @@ export default function Contact() {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!captchaValid) {
-      toast.error("Mohon verifikasi captcha terlebih dahulu.");
+      toast.error("Mohon selesaikan verifikasi keamanan.");
       return;
     }
     setSending(true);
@@ -153,10 +153,12 @@ export default function Contact() {
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="flex-shrink-0 origin-left scale-90 sm:scale-100">
-                <ReCAPTCHA
-                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
-                  onChange={(val) => setCaptchaValid(!!val)}
-                  theme="dark"
+                <Turnstile
+                  siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
+                  onSuccess={() => setCaptchaValid(true)}
+                  onError={() => setCaptchaValid(false)}
+                  onExpire={() => setCaptchaValid(false)}
+                  options={{ theme: "dark", size: "normal" }}
                 />
               </div>
               <button
