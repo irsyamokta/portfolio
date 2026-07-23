@@ -37,7 +37,7 @@ export default function Navbar() {
             alt="Logo"
             className="h-8 w-8 rounded-full object-cover"
           />
-          <span className="text-foreground text-sm">
+          <span className="hidden sm:block text-foreground text-sm">
             irsyamokta<span className="text-muted-foreground">/pratamaryd</span>
           </span>
         </button>
