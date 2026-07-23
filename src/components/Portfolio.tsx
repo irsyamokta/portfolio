@@ -1,12 +1,14 @@
+import { lazy, Suspense } from "react";
 import Navbar from "./portfolio/Navbar";
 import Hero from "./portfolio/Hero";
-import About from "./portfolio/About";
-import Projects from "./portfolio/Projects";
-import Technologies from "./portfolio/Technologies";
-import Experience from "./portfolio/Experience";
-import Workflow from "./portfolio/Workflow";
-import Contact from "./portfolio/Contact";
-import Footer from "./portfolio/Footer";
+
+const About = lazy(() => import("./portfolio/About"));
+const Projects = lazy(() => import("./portfolio/Projects"));
+const Technologies = lazy(() => import("./portfolio/Technologies"));
+const Experience = lazy(() => import("./portfolio/Experience"));
+const Workflow = lazy(() => import("./portfolio/Workflow"));
+const Contact = lazy(() => import("./portfolio/Contact"));
+const Footer = lazy(() => import("./portfolio/Footer"));
 
 export default function Portfolio() {
   return (
@@ -17,14 +19,20 @@ export default function Portfolio() {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="hairline" />
         </div>
-        <About />
-        <Projects />
-        <Technologies />
-        <Experience />
-        <Workflow />
-        <Contact />
+        
+        <Suspense fallback={<div className="h-32" />}>
+          <About />
+          <Projects />
+          <Technologies />
+          <Experience />
+          <Workflow />
+          <Contact />
+        </Suspense>
       </main>
-      <Footer />
+      
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 }
