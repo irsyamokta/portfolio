@@ -17,7 +17,7 @@ COPY package.json ./
 # Install all deps fresh — package-lock.json dikecualikan via .dockerignore
 # karena dibuat di Windows dan hanya berisi binary platform Windows.
 # npm install di sini akan resolve binary Linux yang benar.
-RUN npm install --ignore-scripts
+RUN npm install --ignore-scripts --legacy-peer-deps
 
 # Copy full source
 COPY . .
