@@ -153,12 +153,10 @@ export default function Hero() {
           <Button
             size="lg"
             className="rounded-full border border-border/70"
-            asChild
+            type="button"
           >
-            <a href="#" download>
-              <Download className="mr-1.5 h-4 w-4" />
-              Download CV
-            </a>
+            <Download className="mr-1.5 h-4 w-4" />
+            Download CV
           </Button>
           <a
             href="https://github.com/irsyamokta"
