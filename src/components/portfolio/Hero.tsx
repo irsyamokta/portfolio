@@ -152,7 +152,7 @@ export default function Hero() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button
             size="lg"
-            className="rounded-full border border-border/70"
+            className="hidden rounded-full border border-border/70"
             type="button"
           >
             <Download className="mr-1.5 h-4 w-4" />
